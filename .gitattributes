@@ -1,0 +1,6 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Tell GitHub that these files are SourcePawn
+*.inc text linguist-language=sourcepawn
+*.sma text linguist-language=sourcepawn
