@@ -1,5 +1,5 @@
 /*
-	Download HTTP:X from: https://forums.alliedmods.net/showthread.php?t=282949?t=282949
+	Download HTTP:X from: https://forums.alliedmods.net/showthread.php?t=282949
 	This plugin is using http://proxy.mind-media.com/block/ service
 */
 
@@ -7,16 +7,12 @@
 #include <nvault>
 #include <httpx>
 
-//#define USE_BANIP_CMD
+//#define USE_ADDIP_CMD
 
 #define IP_LENGTH 16
 
 #if !defined PLATFORM_MAX_PATH
 	#define PLATFORM_MAX_PATH 256
-#endif
-
-#if !defined INVALID_HANDLE
-	#define INVALID_HANDLE -1
 #endif
 
 new g_szDataDir[PLATFORM_MAX_PATH];
@@ -49,18 +45,11 @@ public client_putinserver(id) {
 	
 	new szIP[IP_LENGTH];
 	get_user_ip(id, szIP, charsmax(szIP), .without_port = 1);
-	
-	new data[2];
-	nvault_get(g_hVault, szIP, data, charsmax(data));
 
-	if(data[0]) {
-		if(data[0] == '1') {
-			punish_player(id);
-		}
+	if(equal(szIP, "loopback")) {
 		return;
 	}
-
-	if(!equal(szIP, "loopback")) {
+	else {
 		new szIPcopy[IP_LENGTH];
 		copy(szIPcopy, charsmax(szIPcopy), szIP);
 		replace_all(szIPcopy, charsmax(szIPcopy), ".", " ");
@@ -85,6 +74,15 @@ public client_putinserver(id) {
 		}
 	}
 	
+	new data = nvault_get(g_hVault, szIP);
+
+	if(data) {
+		if(data == 1) {
+			punish_player(id);
+		}
+		return;
+	}
+	
 	new szFile[PLATFORM_MAX_PATH];
 	formatex(szFile, charsmax(szFile), "%s/check_%s.txt", g_szDataDir, szIP);
 	
@@ -95,11 +93,11 @@ public client_putinserver(id) {
 	}
 }
 
-public DownloadComplete(const iDownload, const iError) {
+public DownloadComplete(const download, const error) {
 	new szFile[PLATFORM_MAX_PATH];
-	HTTPX_GetFilename(iDownload, szFile, charsmax(szFile));
+	HTTPX_GetFilename(download, szFile, charsmax(szFile));
 	
-	if(iError == 0) {
+	if(!error) {
 		new file = fopen(szFile, "r");
 
 		if(file) {
@@ -116,12 +114,13 @@ public DownloadComplete(const iDownload, const iError) {
 					
 					if(data[0] == 'Y') {
 						new id = find_player("d", szIP);
+
 						if(id) {
 							punish_player(id);
 						}
 
 						nvault_set(g_hVault, szIP, "1");
-					#if defined USE_BANIP_CMD
+					#if defined USE_ADDIP_CMD
 						server_cmd("addip 0 %s;wait;writeip", szIP);
 					#endif
 					}
@@ -136,6 +135,6 @@ public DownloadComplete(const iDownload, const iError) {
 	delete_file(szFile);
 }
 
-public punish_player(id) {
+punish_player(id) {
 	server_cmd("kick #%d ^"Proxy/VPN not Allowed!^"", get_user_userid(id));
 }
