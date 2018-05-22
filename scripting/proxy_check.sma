@@ -86,11 +86,11 @@ public client_putinserver(id) {
 	}
 	
 	new szFile[PLATFORM_MAX_PATH];
-	format(szFile, charsmax(szFile), "%s/check_%s.txt", g_szDataDir, szIP);
+	formatex(szFile, charsmax(szFile), "%s/check_%s.txt", g_szDataDir, szIP);
 	
 	if(!file_exists(szFile)) {
 		new szRequest[68];
-		format(szRequest, charsmax(szRequest), "http://proxy.mind-media.com/block/proxycheck.php?ip=%s", szIP);
+		formatex(szRequest, charsmax(szRequest), "http://proxy.mind-media.com/block/proxycheck.php?ip=%s", szIP);
 		HTTPX_Download(szRequest, szFile, "DownloadComplete", _, _, REQUEST_GET);
 	}
 }
