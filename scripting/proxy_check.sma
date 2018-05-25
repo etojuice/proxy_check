@@ -1,5 +1,5 @@
 /*
-	Download HTTP:X from: https://forums.alliedmods.net/showthread.php?t=282949
+	Download and install HTTP:X from: https://forums.alliedmods.net/showthread.php?t=282949
 	This plugin is using http://proxy.mind-media.com/block/ service
 */
 
@@ -19,7 +19,7 @@ new g_szDataDir[PLATFORM_MAX_PATH];
 new g_hVault = INVALID_HANDLE;
 
 public plugin_init() {
-	register_plugin("Proxy/VPN check", "1.1", "juice");
+	register_plugin("Proxy/VPN check", "1.1b", "juice");
 }
 
 public plugin_cfg() {
