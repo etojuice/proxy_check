@@ -1,4 +1,4 @@
-# proxy_check v1.1b
+# proxy_check v2.0-grip
 [AMXX](https://www.amxmodx.org/) script that prevents players from joining a game through proxy/VPN.
 
 ## Installation
