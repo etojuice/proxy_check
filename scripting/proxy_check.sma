@@ -109,6 +109,10 @@ public HandleRequest() {
 
     new GripJSONValue:data = grip_json_parse_response_body(response, charsmax(response));
 
+    if(data == Invalid_GripJSONValue) {
+      return;
+    }
+
     new szIP[MAX_IP_LENGTH];
     grip_json_get_string(grip_json_object_get_value(data, "ip"), szIP, MAX_IP_LENGTH);
 
