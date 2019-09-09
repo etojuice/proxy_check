@@ -1,5 +1,5 @@
 #include <amxmodx>
-#include <grip>
+#tryinclude <grip>
 #include <nvault>
 
 #pragma semicolon 1
